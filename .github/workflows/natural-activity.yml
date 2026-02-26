@@ -1,0 +1,31 @@
+name: Natural Activity
+
+on:
+  schedule:
+    - cron: '0 8-18 * * 1-5'
+  workflow_dispatch:
+
+jobs:
+  commit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Random commit
+        run: |
+          RANDOM_NUM=$((RANDOM % 100))
+
+          if [ $RANDOM_NUM -gt 30 ]; then
+            echo "Skipping this run"
+            exit 0
+          fi
+
+          echo "Learning log $(date)" >> activity.txt
+
+          git config user.name "Asif Khan"
+          git config user.email "your-email@example.com"
+
+          git add activity.txt
+          git commit -m "Update learning log"
+          git push
